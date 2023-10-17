@@ -1,8 +1,8 @@
 <template>
   <form
     action=""
-    @submit.prevent=""
-    class="flex flex-col justify-center gap-4 px-5 py-3"
+    @submit.prevent="store"
+    class="flex flex-col justify-center gap-3 px-5 py-3"
   >
     <slot></slot>
     <hr />
@@ -14,5 +14,11 @@
 <script>
 export default {
   props: ["button"],
+  emits: ["submit"],
+  methods: {
+    store() {
+      this.$emit("submit");
+    },
+  },
 };
 </script>

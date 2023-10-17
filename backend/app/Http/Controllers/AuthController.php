@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
-{
+{    
     public function register(Request $request)
     {
         $credentials = $request->only(["name","email","password"]);
