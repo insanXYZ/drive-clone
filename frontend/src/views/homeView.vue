@@ -1,5 +1,5 @@
 <template>
-  <bar> </bar>
+  <bar>home </bar>
 </template>
 <script>
 import bar from "./templates/bar.vue";

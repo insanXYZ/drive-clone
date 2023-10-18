@@ -28,7 +28,7 @@
     <!-- rightbar -->
     <div class="w-full h-full overflow-hidden">
       <!-- topbar -->
-      <div class="w-full px-1 flex justify-between h-[50px]">
+      <div class="w-full px-1 pr-5 flex justify-between h-[50px]">
         <form action="" @submit.prevent class="flex items-center">
           <img
             src="src/assets/img/search.png"

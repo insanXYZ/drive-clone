@@ -1,22 +1,23 @@
 import Axios from "axios";
 import Cookies from "js-cookie";
 
-function isAuth(to, from, next)
+function isGuest(to , from ,next)
 {
   if(Cookies.get("token")){
     Axios.post("http://127.0.0.1:8000/api/isAuth",null,{
       headers: {
         Accept: "application/json",
-        Authorization : "Bearer " + Cookies.get("token")
+        Authorization : "Bearer" + Cookies.get("token")
       }
     }).then((response)=>{
-      next()
+      next("/")
     }).catch((response)=>{
-      next("/login")
+      next()
     })
   } else {
-    next("/login")
+    next()
   }
+
 }
 
-export default isAuth;
+export default isGuest;
