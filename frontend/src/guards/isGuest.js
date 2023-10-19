@@ -11,7 +11,11 @@ function isGuest(to , from ,next)
       }
     }).then((response)=>{
       next("/")
-    }).catch((response)=>{
+    }).catch((error)=>{
+      if("token" in error.response.data){
+        Cookies.set("token",error.response.data.token)
+        next("/")
+      }
       next()
     })
   } else {

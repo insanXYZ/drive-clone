@@ -1,6 +1,26 @@
 <template>
   <!-- flex -->
   <div class="w-screen h-screen flex bg-zinc-200">
+    <!-- modal create -->
+
+    <div
+      class="fixed w-screen h-screen bg-black bg-opacity-50 flex justify-center items-center"
+    >
+      <div
+        class="w-screen h-screen backdrop-blur-sm backdrop-filter backdrop-opacity-100 flex justify-center items-center"
+      >
+        <form
+          @submit.prevent="upload"
+          action=""
+          class="w-2/3 min-w-[450px] h-2/3 min-h-[400px] bg-white rounded-md overflow-x-hidden overflow-y-auto"
+          enctype="multipart/form-data"
+        >
+          <input type="file" multiple ref="file" />
+          <button type="submit">kirim</button>
+        </form>
+      </div>
+    </div>
+
     <!-- leftbar -->
     <div class="flex w-[270px] flex-col gap-6 h-full px-5 py-3">
       <div class="flex gap-2 items-center">
@@ -17,12 +37,8 @@
         <menuLabel to="/" image="/src/assets/img/storage.png"
           >Drive saya</menuLabel
         >
-        <menuLabel to="/recent" image="/src/assets/img/clock.png"
-          >Terbaru</menuLabel
-        >
-        <menuLabel to="/trash" image="/src/assets/img/trash.png"
-          >Sampah</menuLabel
-        >
+        <menuLabel to="#" image="/src/assets/img/clock.png">Terbaru</menuLabel>
+        <menuLabel to="#" image="/src/assets/img/trash.png">Sampah</menuLabel>
       </div>
     </div>
     <!-- rightbar -->
@@ -60,6 +76,12 @@ import menuLabel from "../../components/app/menuLabel.vue";
 export default {
   components: {
     menuLabel,
+  },
+  methods: {
+    upload() {
+      const file = this.$refs.file;
+      console.log(file.files);
+    },
   },
 };
 </script>

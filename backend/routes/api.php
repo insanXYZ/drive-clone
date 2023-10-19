@@ -21,10 +21,8 @@ Route::middleware("guest")->group(function(){
     Route::post("/login",[AuthController::class , "login"]);
 });
 
-Route::middleware("auth:api")->group(function(){
+Route::middleware("auth.jwt")->group(function(){
     Route::post("/isAuth",function(){
-        return response()->json([
-            "by"=>"insanXYZ"
-        ]);
+        return "hello";
     });
 });
