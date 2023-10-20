@@ -12,7 +12,7 @@ function isGuest(to , from ,next)
     }).then((response)=>{
       next("/")
     }).catch((error)=>{
-      if("token" in error.response.data){
+      if(error.response.data.token){
         Cookies.set("token",error.response.data.token)
         next("/")
       }

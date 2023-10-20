@@ -1,38 +1,14 @@
 <template>
   <!-- flex -->
   <div class="w-screen h-screen flex bg-zinc-200">
-    <!-- modal create -->
-
-    <div
-      class="fixed w-screen h-screen bg-black bg-opacity-50 flex justify-center items-center"
-    >
-      <div
-        class="w-screen h-screen backdrop-blur-sm backdrop-filter backdrop-opacity-100 flex justify-center items-center"
-      >
-        <form
-          @submit.prevent="upload"
-          action=""
-          class="w-2/3 min-w-[450px] h-2/3 min-h-[400px] bg-white rounded-md overflow-x-hidden overflow-y-auto"
-          enctype="multipart/form-data"
-        >
-          <input type="file" multiple ref="file" />
-          <button type="submit">kirim</button>
-        </form>
-      </div>
-    </div>
-
     <!-- leftbar -->
     <div class="flex w-[270px] flex-col gap-6 h-full px-5 py-3">
       <div class="flex gap-2 items-center">
         <img class="w-10" src="/src/assets/img/drive.png" />
         <span class="text-2xl font-light">Drive</span>
       </div>
-      <div
-        class="flex justify-center items-center py-3 shadow-lg gap-2 w-[100px] rounded-lg bg-white"
-      >
-        <img src="src/assets/img/plus.png" class="w-5" />
-        <span>Baru</span>
-      </div>
+      <!-- input -->
+      <inputFile @uploadInput="(item)=>upload(item)"></inputFile>
       <div class="flex flex-col gap-4 w-full">
         <menuLabel to="/" image="/src/assets/img/storage.png"
           >Drive saya</menuLabel
@@ -72,15 +48,29 @@
 </template>
 <script>
 import menuLabel from "../../components/app/menuLabel.vue";
+import input from "../../methods/files/input";
+import inputFile from "../../components/app/inputFile.vue";
 
 export default {
   components: {
     menuLabel,
+    inputFile,
   },
   methods: {
-    upload() {
-      const file = this.$refs.file;
-      console.log(file.files);
+    upload(item) {
+      let formdata = new FormData();
+
+      for (let i = 0; i < item.length; i++) {
+        formdata.append("file[]", item[i]);
+      }
+
+      input(formdata)
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((response) => {
+          console.log(response);
+        });
     },
   },
 };

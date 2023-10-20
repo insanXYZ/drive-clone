@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,4 +26,5 @@ Route::middleware("auth.jwt")->group(function(){
     Route::post("/isAuth",function(){
         return "hello";
     });
+    Route::post("/input",[FileController::class , "input"]);
 });
