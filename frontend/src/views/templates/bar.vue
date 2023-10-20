@@ -1,5 +1,6 @@
 <template>
   <!-- flex -->
+  <modalProgress v-if="showProgress" :value="value"></modalProgress>
   <div class="w-screen h-screen flex bg-zinc-200">
     <!-- leftbar -->
     <div class="flex w-[270px] flex-col gap-6 h-full px-5 py-3">
@@ -8,7 +9,7 @@
         <span class="text-2xl font-light">Drive</span>
       </div>
       <!-- input -->
-      <inputFile @uploadInput="(item)=>upload(item)"></inputFile>
+      <inputFile @uploadInput="(item) => upload(item)"></inputFile>
       <div class="flex flex-col gap-4 w-full">
         <menuLabel to="/" image="/src/assets/img/storage.png"
           >Drive saya</menuLabel
@@ -50,11 +51,19 @@
 import menuLabel from "../../components/app/menuLabel.vue";
 import input from "../../methods/files/input";
 import inputFile from "../../components/app/inputFile.vue";
+import modalProgress from "../../components/app/modalProgress.vue";
 
 export default {
+  data(){
+    return{
+      showProgress: false,
+      value: 0
+    }
+  },
   components: {
     menuLabel,
     inputFile,
+    modalProgress,
   },
   methods: {
     upload(item) {
@@ -64,12 +73,22 @@ export default {
         formdata.append("file[]", item[i]);
       }
 
-      input(formdata)
+      this.showProgress = true;
+
+      input(formdata, (progressEvent) => {
+        const { loaded, total } = progressEvent;
+        let percent = Math.floor((loaded * 100) / total);
+        if (percent <= 100) {
+          this.value = percent
+        }
+      })
         .then((response) => {
-          console.log(response.data);
+          if(response.data.success == true){
+            this.showProgress = false
+          }
         })
-        .catch((response) => {
-          console.log(response);
+        .catch((error) => {
+          console.log(error.response.data);
         });
     },
   },

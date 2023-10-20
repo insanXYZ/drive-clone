@@ -4,51 +4,37 @@ namespace App\Http\Controllers;
 
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Log;
+use Intervention\Image\Facades\Image;
 
 class FileController extends Controller
 {
-    public function getAll()
-    {
-        //
-    }
-
-    public function getDetail()
-    {
-        //
-    }
-
     public function input(Request $request)
-    {
-        try{
-            if($request->hasFile("file")){
+{
+    try {
+        if ($request->hasFile("file")) {
+            $path = "uploads/" . JWTAuth::user()->id;
+            $pathThumb = "uploads/" . JWTAuth::user()->id . "/thumb";
+            $extension = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg','mp4', 'mov', 'avi', 'flv', 'wmv', 'mkv', 'webm'];
 
-                foreach ($request->file("file") as $file){
-                    $file->storeAs("uploads/". JWTAuth::user()->id,$file->getClientOriginalName());
+            foreach ($request->file("file") as $file) {
+                if (in_array(strtolower($file->getClientOriginalExtension()), $extension)) {
+                    Image::make($file->getRealPath())->resize(200,200)->save($pathThumb);
                 }
 
-                return response()->json([
-                    "success" => true,
-                ]);
-
+                $file->storeAs($path, $file->getClientOriginalName());
             }
-        }catch(Exception $e){
+
             return response()->json([
-                "success"=>false,
+                "success" => true,
             ]);
         }
-
-
+    } catch (Exception $e) {
+        Log::error($e);
+        return response()->json([
+            "success" => false,
+        ]);
     }
-
-    public function remove()
-    {
-        //
-    }
-
-    public function starred()
-    {
-        //
-    }
+}
 }

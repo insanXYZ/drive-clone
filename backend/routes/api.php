@@ -26,5 +26,5 @@ Route::middleware("auth.jwt")->group(function(){
     Route::post("/isAuth",function(){
         return "hello";
     });
-    Route::post("/input",[FileController::class , "input"]);
+    Route::post("/file",[FileController::class , "input"]);
 });
