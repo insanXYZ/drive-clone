@@ -27,4 +27,5 @@ Route::middleware("auth.jwt")->group(function(){
         return "hello";
     });
     Route::post("/file",[FileController::class , "input"]);
+    Route::get("/file",[FileController::class , "index"]);
 });

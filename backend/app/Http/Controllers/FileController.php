@@ -2,12 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\FileProcessor;
 use Exception;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Services\FileProcessor;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class FileController extends Controller
 {
+    public function index()
+    {
+        return response()->json([
+            $file = User::find(JWTAuth::user()->id)->file,
+        ]);
+    }
+
     public function input(Request $request)
     {
         try{
