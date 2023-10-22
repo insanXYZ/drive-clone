@@ -1,7 +1,7 @@
 <template>
   <!-- flex -->
   <modalProgress v-if="showProgress" :value="value"></modalProgress>
-  <div class="w-screen h-screen flex bg-zinc-200">
+  <div class="w-screen h-screen flex bg-zinc-100">
     <!-- leftbar -->
     <div class="flex w-[270px] flex-col gap-6 h-full px-5 py-3">
       <div class="flex gap-2 items-center">
@@ -40,7 +40,7 @@
       </div>
       <!-- mainBar -->
       <div
-        class="bg-white w-[calc(100%-10px)] h-[calc(100%-55px)] box-border m-auto rounded-lg p-2 overflow-auto"
+        class="bg-white w-[calc(100%-10px)] h-[calc(100%-55px)] box-border m-auto rounded-lg p-5 overflow-auto"
       >
         <slot></slot>
       </div>

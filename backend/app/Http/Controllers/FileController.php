@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\filesResource;
 use Exception;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -12,9 +13,7 @@ class FileController extends Controller
 {
     public function index()
     {
-        return response()->json([
-            $file = User::find(JWTAuth::user()->id)->file,
-        ]);
+        return filesResource::collection(User::find(JWTAuth::user()->id)->file);
     }
 
     public function input(Request $request)

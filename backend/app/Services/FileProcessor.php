@@ -18,26 +18,16 @@ class FileProcessor
 
     foreach ($files as $file) {
       $thumb = false;
-      $originalPath = $file->storeAs($path, $file->getClientOriginalName());
+      $fileName = $file->getClientOriginalName();
+      $file->storeAs($path, $file->getClientOriginalName());
       if (in_array(strtolower($file->getClientOriginalExtension()), $extension)) {
-        $thumbnailPath = storage_path("app\\public\\" . $path . "\\thumbnail\\");
-
-        if (!File::isDirectory($thumbnailPath)) {
-          File::makeDirectory($thumbnailPath, 0777, true, true);
-        }
-
-        Image::make(storage_path("app\\public\\" . $originalPath))
-            ->crop(200, 200)
-            ->resize(200, 200)
-            ->save($thumbnailPath . $file->getClientOriginalName(), 80, $file->getClientOriginalExtension());
-
         $thumb = true;
       }
 
       ModelsFile::create([
         "user_id" => $userId,
-        "fileName" => $originalPath,
-        "thumbnail" => $thumb ? $path."/thumbnail/". $file->getClientOriginalName() : null,
+        "fileName" => $fileName,
+        "type" => $thumb ? "image" : "doc",
         "stared" => false
       ]);
     }
