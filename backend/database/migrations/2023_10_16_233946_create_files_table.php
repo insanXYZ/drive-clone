@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string("user_id")->nullable(false);
             $table->text("fileName")->nullable(false);
             $table->string("type")->nullable(false);
-            // $table->text("thumbnail")->nullable()->default(null);
+            $table->string("size")->nullable(false);
             $table->boolean("stared")->nullable(false)->default(false);
             $table->timestamps();
 

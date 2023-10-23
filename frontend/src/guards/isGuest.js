@@ -10,12 +10,11 @@ function isGuest(to , from ,next)
         Authorization : "Bearer" + Cookies.get("token")
       }
     }).then((response)=>{
+      if(response.data.token){
+        Cookies.set("token", response.data.token)
+      }
       next("/")
     }).catch((error)=>{
-      if(error.response.data.token){
-        Cookies.set("token",error.response.data.token)
-        next("/")
-      }
       next()
     })
   } else {

@@ -28,6 +28,7 @@ class FileProcessor
         "user_id" => $userId,
         "fileName" => $fileName,
         "type" => $thumb ? "image" : "doc",
+        "size" => $file->getSize(),
         "stared" => false
       ]);
     }

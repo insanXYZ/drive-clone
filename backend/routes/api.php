@@ -23,8 +23,8 @@ Route::middleware("guest")->group(function(){
 });
 
 Route::middleware("auth.jwt")->group(function(){
-    Route::post("/isAuth",function(){
-        return "hello";
+    Route::post("/isAuth", function(){
+        return true;
     });
     Route::post("/file",[FileController::class , "input"]);
     Route::get("/file",[FileController::class , "index"]);
