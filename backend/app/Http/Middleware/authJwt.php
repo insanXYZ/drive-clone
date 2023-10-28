@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class authJwt
@@ -15,25 +16,32 @@ class authJwt
      */
     public function handle(Request $request, Closure $next)
     {
+        $response = $next($request);
+
         try {
-            $user = JWTAuth::parseToken()->authenticate();
-            return $next($request); 
+            if(! $user = JWTAuth::parseToken()->authenticate()){
+                return response()->json([
+                    "success" => false,
+                    "message" => "Error"
+                ]);
+            }
         } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
-            $token = JWTAuth::refresh();
-            JWTAuth::setToken($token);
             return response()->json([
-                "token" => $token,
-            ],200);
+                "success" => false,
+                "message" => "Expired"
+            ],401);        
         } catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
             return response()->json([
                 "success" => false,
-                "message" => "Token invalid"
-            ], 401);
+                "message" => "Invalid"
+            ],401);
         } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
             return response()->json([
                 "success" => false,
-                "message" => "An error occurred"
-            ], 500);
+                "message" => "Error"
+            ],401);
         }
+
+        return $response;
     }
 }

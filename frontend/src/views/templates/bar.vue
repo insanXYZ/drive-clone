@@ -49,7 +49,7 @@
 </template>
 <script>
 import menuLabel from "../../components/app/menuLabel.vue";
-import input from "../../methods/files/input";
+import {input} from "../../methods/files/methodFile";
 import inputFile from "../../components/app/inputFile.vue";
 import modalProgress from "../../components/app/modalProgress.vue";
 
@@ -65,6 +65,7 @@ export default {
     inputFile,
     modalProgress,
   },
+  emits: ["response"],
   methods: {
     upload(item) {
       let formdata = new FormData();
@@ -86,9 +87,10 @@ export default {
           if(response.data.success == true){
             this.showProgress = false
           }
+          this.$emit("response")
         })
         .catch((error) => {
-          //
+          thi.$emit("response")
         });
     },
   },

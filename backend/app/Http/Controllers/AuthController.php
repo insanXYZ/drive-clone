@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Contracts\Providers\JWT;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
@@ -65,6 +66,15 @@ class AuthController extends Controller
             "success" => true,
             "token" => $token,
             "expires_in" => config("jwt.ttl")
+        ]);
+    }
+
+    public function refresh()
+    {
+        $token = JWTAuth::refresh();
+        JWTAuth::setToken($token);
+        return response()->json([
+            "token" => $token
         ]);
     }
 }

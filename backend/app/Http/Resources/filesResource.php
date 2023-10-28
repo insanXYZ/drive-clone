@@ -19,7 +19,7 @@ class filesResource extends JsonResource
         return [
             "id"=> $this->id,
             "fileName"=> $this->fileName,
-            "url" => $this->type == "image" ? url("/storage/".$this->user_id."/".$this->fileName) : null,
+            "url" =>  url("/storage/".$this->user_id."/".$this->fileName),
             "updated_at" => Carbon::parse($this->updated_at)->format('j F Y'),
             "type" => $this->type,
             "size" => $this->size,

@@ -5,6 +5,7 @@ use App\Http\Controllers\FileController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,9 +24,12 @@ Route::middleware("guest")->group(function(){
 });
 
 Route::middleware("auth.jwt")->group(function(){
-    Route::post("/isAuth", function(){
-        return true;
-    });
+    Route::post("/refresh",[AuthController::class ,"refresh"]);
     Route::post("/file",[FileController::class , "input"]);
+    Route::put("/file/{id}",[FileController::class , "update"]);
     Route::get("/file",[FileController::class , "index"]);
+    Route::get("/file/{fileName}",[FileController::class , "download"]);
+    Route::delete("/file/{id}",[FileController::class , "delete"] );
 });
+
+Route::get("/refresh", [AuthController::class, "refresh"])->middleware("refreshToken");
