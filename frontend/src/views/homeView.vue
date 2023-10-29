@@ -1,12 +1,12 @@
 <template>
-  <modalFile @deleteFile="(item) => showDelete(item.fileName , item.id) " @changeName="item=>showDetail(item.fileName , item.id)" @closeModal="closeModal()" v-if="modal" :dataFile="dataFile">
+  <modalFile @download="item => Download(item.fileName)" @deleteFile="(item) => showDelete(item.fileName , item.id) " @changeName="item=>showDetail(item.fileName , item.id)" @closeModal="closeModal()" v-if="modal" :dataFile="dataFile">
   </modalFile>
   <modalDetail @response="closeDetail" v-if="detailShow" :dataFile="detailsFile">
   </modalDetail>
   <modalDelete @response="closeDelete" v-if="deleteShow" :dataFile="deleteFile">
   </modalDelete>
   <bar @response="getDrive()">
-    <div class="w-full flex flex-col gap-5">
+    <div class="w-full flex flex-col gap-5 overflow-y-auto">
       <div class="grid lg:grid-cols-4 md:grid-cols-3 gap-3">
         <div
           v-for="item in files.slice(0, windowWidth)" 
@@ -60,7 +60,7 @@
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-              <tr v-for="(item , i) in files.slice(4, files.length)" :key="item.id">
+              <tr v-for="(item , i) in files.slice(4, files.length)" :key="item.id" class="hover:bg-zinc-100">
                 <td class="px-6 py-4 gap-4 whitespace-no-wrap flex items-center cursor-pointer" @click="showModal(item.fileName , item.url , item.type, item.id)">
                   <img v-if="item.type == 'doc'" src="src/assets/img/doc.png" class="w-4">
                   <img v-if="item.type == 'image'" src="src/assets/img/image.png" class="w-4">
@@ -74,7 +74,7 @@
 
                 </td>
                 <td class="px-6 py-4 whitespace-no-wrap relative">
-                  <img @click="toggleOption(i)" src="src/assets/img/dot.png" class="w-4 cursor-pointer p-[5px] rounded-full hover:bg-blue-200 box-content">
+                  <img @click="toggleOption(i)" src="src/assets/img/dot.png" class="w-4 cursor-pointer p-[5px] rounded-full hover:bg-zinc-200 box-content">
                   <Transition name="slide-fade">
                     <div v-if="option === i" class="absolute -left-60 -top-28 bg-white shadow-2xl px-1 py-4 flex gap-3 flex-col w-[250px] ">
                       <options @click="Download(item.fileName)" img="download.png">Download</options>
@@ -98,6 +98,8 @@ import options from "../components/app/home/options.vue";
 import modalFile from "../components/app/home/modalFile.vue"
 import modalDetail from "../components/app/home/modalDetail.vue"
 import modalDelete from "../components/app/home/modalDelete.vue";
+
+
 
 export default {
   data() {

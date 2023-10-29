@@ -78,8 +78,31 @@ class FileController extends Controller
 
     public function download($filename){
         if(Storage::disk("public")->exists("uploads/". JWTAuth::user()->id ."/". $filename)){
-
             return response()->download(storage_path()."/app/public/uploads/".JWTAuth::user()->id."/".$filename);
         }
+    }
+
+    // Trash
+
+    public function getTrash()
+    {
+        $file = User::find(JWTAuth::user()->id)->file()->onlyTrashed()->get();
+        return filesResource::collection($file);
+    }
+
+    public function restore(Request $request){
+        $file = User::find(JWTAuth::user()->id)->file()->where("id",$request->id)->restore();
+        return response()->json([
+            "success"=>true
+        ]);
+    }
+
+    public function forceDelete($id)
+    {
+        Storage::disk("public")->delete("uploads/".JWTAuth::user()->id."/".File::withTrashed()->find($id)->fileName);
+        User::find(JWTAuth::user()->id)->file()->where("id",$id)->forceDelete();
+        return response()->json([
+            "success"=>true
+        ]);    
     }
 }

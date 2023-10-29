@@ -33,11 +33,11 @@ axiosInstance.interceptors.response.use(
 
       return axiosInstance(originalRequest)
     }
-    if(error.response.status == 401 && error.response.data.message == "Invalid" || "Error"){
+    // if(error.response.status == 401 && error.response.data.message == "Invalid" || "Error"){
 
-      Cookies.remove("token")
-      this.$router.push("/login")
-    }
+    //   Cookies.remove("token")
+    //   this.$router.push("/login")
+    // }
 
     return Promise.reject(error)
   }
@@ -78,4 +78,20 @@ function download(fileName) {
   })
 }
 
-export {get,input,deleteFile,updateName,download};
+function getTrash(){
+  return axiosInstance.get("/trash")
+}
+
+function restore(id)
+{
+  return axiosInstance.post("/trash",{
+    id:id
+  })
+}
+
+function forceDelete(id)
+{
+  return axiosInstance.delete("/trash/"+id)
+}
+
+export {get,input,deleteFile,updateName,download,getTrash,restore,forceDelete};

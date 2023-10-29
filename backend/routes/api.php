@@ -30,6 +30,9 @@ Route::middleware("auth.jwt")->group(function(){
     Route::get("/file",[FileController::class , "index"]);
     Route::get("/file/{fileName}",[FileController::class , "download"]);
     Route::delete("/file/{id}",[FileController::class , "delete"] );
+    Route::get("/trash",[FileController::class , "getTrash"]);
+    Route::post("/trash",[FileController::class , "restore"]);
+    Route::delete("/trash/{id}",[FileController::class , "forceDelete"]);
 });
 
 Route::get("/refresh", [AuthController::class, "refresh"])->middleware("refreshToken");

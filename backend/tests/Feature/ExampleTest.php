@@ -4,8 +4,11 @@ namespace Tests\Feature;
 
 // use Illuminate\Foundation\Testing\RefreshDatabase;
 
-use App\Models\File;
 use Tests\TestCase;
+use App\Models\File;
+use Illuminate\Support\Facades\Log;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Storage;
 
 class ExampleTest extends TestCase
 {
@@ -14,28 +17,6 @@ class ExampleTest extends TestCase
      */
     public function test_the_application_returns_a_successful_response(): void
     {
-
-        $data = [
-            [
-                'user_id' => '9a6c055e-b2a8-43de-b739-67f023a05f3e',
-                'fileName' => 'uploads/9a6c055e-b2a8-43de-b739-67f023a05f3e/download.jpg',
-                'thumbnail' => 'uploads/9a6c055e-b2a8-43de-b739-67f023a05f3e/thumbnail/download.jpg',
-                'stared' => false
-            ],
-            [
-                'user_id' => '9a6c055e-b2a8-43de-b739-67f023a05f3e',
-                'fileName' => 'uploads/9a6c055e-b2a8-43de-b739-67f023a05f3e/download.jpg',
-                'thumbnail' => 'uploads/9a6c055e-b2a8-43de-b739-67f023a05f3e/thumbnail/download.jpg',
-                'stared' => false
-            ],
-            [
-                'user_id' => '9a6c055e-b2a8-43de-b739-67f023a05f3e',
-                'fileName' => 'uploads/9a6c055e-b2a8-43de-b739-67f023a05f3e/download.jpg',
-                'thumbnail' => 'uploads/9a6c055e-b2a8-43de-b739-67f023a05f3e/thumbnail/download.jpg',
-                'stared' => false
-            ],
-        ];
-
-        File::insert($data);
+        Storage::disk("public")->delete("uploads/9a6d1d22-8473-44e7-903b-df6bb5e5b7ad/". File::find("9a7926e9-7e00-438e-b8a6-71a82a34cd1e")->fileName);
     }
 }

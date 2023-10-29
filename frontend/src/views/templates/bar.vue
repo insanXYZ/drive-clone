@@ -14,12 +14,12 @@
         <menuLabel to="/" image="/src/assets/img/storage.png"
           >Drive saya</menuLabel
         >
-        <menuLabel to="#" image="/src/assets/img/clock.png">Terbaru</menuLabel>
-        <menuLabel to="#" image="/src/assets/img/trash.png">Sampah</menuLabel>
+        <menuLabel to="recent" image="/src/assets/img/clock.png">Terbaru</menuLabel>
+        <menuLabel to="trash" image="/src/assets/img/trash.png">Sampah</menuLabel>
       </div>
     </div>
     <!-- rightbar -->
-    <div class="w-full h-full overflow-hidden">
+    <div class="w-full h-full overflow-hidden relative">
       <!-- topbar -->
       <div class="w-full px-1 pr-5 flex justify-between h-[50px]">
         <form action="" @submit.prevent class="flex items-center">
@@ -40,7 +40,7 @@
       </div>
       <!-- mainBar -->
       <div
-        class="bg-white w-[calc(100%-10px)] h-[calc(100%-55px)] box-border m-auto rounded-lg p-5 overflow-auto"
+        class="bg-white w-[calc(100%-10px)] h-[calc(100%-55px)] relative  box-border m-auto rounded-lg p-5 overflow-y-auto "
       >
         <slot></slot>
       </div>
