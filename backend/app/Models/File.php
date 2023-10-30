@@ -23,4 +23,8 @@ class File extends Model
         return $this->belongsTo(User::class , "user_id");
     }
 
+    public function scopeStarred(Builder $query){
+        $query->where("stared", 1);
+    }
+
 }

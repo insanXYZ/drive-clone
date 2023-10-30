@@ -94,4 +94,13 @@ function forceDelete(id)
   return axiosInstance.delete("/trash/"+id)
 }
 
-export {get,input,deleteFile,updateName,download,getTrash,restore,forceDelete};
+function starred(id)
+{
+  return axiosInstance.put("/file/"+id)
+}
+
+function getStarred(){
+  return axiosInstance.get("/starred")
+}
+
+export {get,input,deleteFile,updateName,download,getTrash,restore,forceDelete,starred,getStarred};

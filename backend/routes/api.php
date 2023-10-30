@@ -29,10 +29,12 @@ Route::middleware("auth.jwt")->group(function(){
     Route::put("/file/{id}",[FileController::class , "update"]);
     Route::get("/file",[FileController::class , "index"]);
     Route::get("/file/{fileName}",[FileController::class , "download"]);
+    Route::put("/file/{id}", [FileController::class , "starred"]);
     Route::delete("/file/{id}",[FileController::class , "delete"] );
     Route::get("/trash",[FileController::class , "getTrash"]);
     Route::post("/trash",[FileController::class , "restore"]);
     Route::delete("/trash/{id}",[FileController::class , "forceDelete"]);
+    Route::get("/starred",[FileController::class , "getStarred"]);
 });
 
 Route::get("/refresh", [AuthController::class, "refresh"])->middleware("refreshToken");

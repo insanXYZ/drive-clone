@@ -1,7 +1,7 @@
 <template>
   <!-- flex -->
   <modalProgress v-if="showProgress" :value="value"></modalProgress>
-  <div class="w-screen h-screen flex bg-zinc-100">
+  <div class="w-screen h-screen flex bg-zinc-100 z-10">
     <!-- leftbar -->
     <div class="flex w-[270px] flex-col gap-6 h-full px-5 py-3">
       <div class="flex gap-2 items-center">
@@ -14,7 +14,7 @@
         <menuLabel to="/" image="/src/assets/img/storage.png"
           >Drive saya</menuLabel
         >
-        <menuLabel to="recent" image="/src/assets/img/clock.png">Terbaru</menuLabel>
+        <menuLabel to="starred" image="/src/assets/img/star.png">Berbintang</menuLabel>
         <menuLabel to="trash" image="/src/assets/img/trash.png">Sampah</menuLabel>
       </div>
     </div>
@@ -22,12 +22,12 @@
     <div class="w-full h-full overflow-hidden relative">
       <!-- topbar -->
       <div class="w-full px-1 pr-5 flex justify-between h-[50px]">
-        <form action="" @submit.prevent class="flex items-center">
+        <form action="" @submit.prevent="formInput" class="flex items-center">
           <img
             src="src/assets/img/search.png"
             class="w-8 bg-white p-2 border-white rounded-l-full"
           />
-          <input
+          <input v-model="input"
             type="text"
             class="p-1 w-[350px] rounded-r-full focus:border-none focus:outline-none"
           />
@@ -40,7 +40,7 @@
       </div>
       <!-- mainBar -->
       <div
-        class="bg-white w-[calc(100%-10px)] h-[calc(100%-55px)] relative  box-border m-auto rounded-lg p-5 overflow-y-auto "
+        class="bg-white w-[calc(100%-10px)] h-[calc(100%-55px)] relative  box-border m-auto rounded-lg p-5  overflow-y-auto "
       >
         <slot></slot>
       </div>
@@ -57,7 +57,8 @@ export default {
   data(){
     return{
       showProgress: false,
-      value: 0
+      value: 0,
+      input : ""
     }
   },
   components: {
@@ -65,7 +66,7 @@ export default {
     inputFile,
     modalProgress,
   },
-  emits: ["response"],
+  emits: ["response", "input"],
   methods: {
     upload(item) {
       let formdata = new FormData();
@@ -93,6 +94,9 @@ export default {
           thi.$emit("response")
         });
     },
+    formInput(){
+      this.$emit("input",this.input)
+    }
   },
 };
 </script>

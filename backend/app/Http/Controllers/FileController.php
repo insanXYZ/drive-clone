@@ -82,6 +82,18 @@ class FileController extends Controller
         }
     }
 
+    public function starred($id){
+        $file = User::find(JWTAuth::user()->id)->file()->find($id);
+
+        $file->update([
+            "stared" => $file->stared == 0 ? 1 : 0
+        ]);
+
+        return response()->json([
+            "success" => true
+        ]);
+    }
+
     // Trash
 
     public function getTrash()
@@ -104,5 +116,13 @@ class FileController extends Controller
         return response()->json([
             "success"=>true
         ]);    
+    }
+
+    // starred
+
+    public function getStarred(){
+        $file = User::find(JWTAuth::user()->id)->file()->starred()->get();
+
+        return filesResource::collection($file);
     }
 }

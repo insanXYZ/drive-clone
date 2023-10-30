@@ -14,6 +14,8 @@
             <img @click="show = !show" src="src/assets/img/dotW.png" class="w-6 cursor-pointer">
             <Transition name="slide-fade">
                       <div v-if="show" class="absolute -left-64 -bottom-40 bg-white shadow-2xl px-1 py-4 flex gap-3 flex-col w-[250px] rounded-md">
+                        <options @click="starred(dataFile.id)" v-if="dataFile.stared == 0" img="star.png">Beri bintang</options>
+                        <options @click="starred(dataFile.id)" v-else img="starred.png">Hapus bintang</options>
                         <options @click="download(dataFile.fileName)" img="download.png">Download</options>
                         <options @click="changeName(dataFile.fileName , dataFile.id)" img="edit.png">Ganti nama</options>
                         <options @click="deleteFile(dataFile.fileName, dataFile.id)" img="trash.png">Hapus</options>
@@ -46,8 +48,12 @@ export default {
     modalTemplate
   },
   props: ["dataFile"],
-  emits: ['closeModal','changeName',"deleteFile",'download'],
+  emits: ['closeModal','changeName',"deleteFile",'download',"starred"],
   methods: {
+    starred(id){
+      this.dataFile.stared = ! this.dataFile.stared
+      this.$emit("starred",id)
+    },
     closeModal(){
       this.$emit("closeModal")
     },

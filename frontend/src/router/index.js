@@ -5,7 +5,7 @@ import registerView from '../views/registerView.vue'
 import isAuth from "../guards/isAuth"
 import isGuest from "../guards/isGuest"
 import trashView from "../views/trashView.vue"
-import starred from "../views/starredView.vue"
+import starredView from "../views/starredView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

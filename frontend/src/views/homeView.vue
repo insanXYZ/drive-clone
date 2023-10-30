@@ -1,16 +1,16 @@
 <template>
-  <modalFile @download="item => Download(item.fileName)" @deleteFile="(item) => showDelete(item.fileName , item.id) " @changeName="item=>showDetail(item.fileName , item.id)" @closeModal="closeModal()" v-if="modal" :dataFile="dataFile">
+  <modalFile @starred="item => starred(item)" @download="item => Download(item.fileName)" @deleteFile="(item) => showDelete(item.fileName , item.id) " @changeName="item=>showDetail(item.fileName , item.id)" @closeModal="closeModal()" v-if="modal" :dataFile="dataFile">
   </modalFile>
   <modalDetail @response="closeDetail" v-if="detailShow" :dataFile="detailsFile">
   </modalDetail>
   <modalDelete @response="closeDelete" v-if="deleteShow" :dataFile="deleteFile">
   </modalDelete>
-  <bar @response="getDrive()">
+  <bar @input="item => console.log(item)" @response="getDrive()">
     <div class="w-full flex flex-col gap-5 overflow-y-auto">
       <div class="grid lg:grid-cols-4 md:grid-cols-3 gap-3">
         <div
           v-for="item in files.slice(0, windowWidth)" 
-          @click="showModal(item.fileName , item.url , item.type, item.id)"
+          @click="showModal(item.fileName , item.url , item.type, item.id , item.stared)"
           class="w-full overflow-hidden rounded-md flex flex-col gap-3 bg-zinc-100 px-2 py-4 cursor-pointer hover:bg-zinc-200 transition-all"
         >
           <div class="flex gap-5 items-center px-2">
@@ -76,7 +76,9 @@
                 <td class="px-6 py-4 whitespace-no-wrap relative">
                   <img @click="toggleOption(i)" src="src/assets/img/dot.png" class="w-4 cursor-pointer p-[5px] rounded-full hover:bg-zinc-200 box-content">
                   <Transition name="slide-fade">
-                    <div v-if="option === i" class="absolute -left-60 -top-28 bg-white shadow-2xl px-1 py-4 flex gap-3 flex-col w-[250px] ">
+                    <div v-if="option === i" class="absolute -left-60 -top-36 bg-white shadow-2xl px-1 py-4 flex gap-3 flex-col w-[250px] ">
+                      <options @click="starred(item.id)" v-if="item.stared == 0" img="star.png">Beri bintang</options>
+                      <options @click="starred(item.id)" v-else img="starred.png">Hapus bintang</options>
                       <options @click="Download(item.fileName)" img="download.png">Download</options>
                       <options @click="showDetail(item.fileName , item.id)" img="edit.png">Ganti nama</options>
                       <options @click="showDelete(item.fileName ,item.id)" img="trash.png">Hapus</options>
@@ -92,13 +94,12 @@
 </template>
 <script>
 import bar from "./templates/bar.vue";
-import {get,download} from "../methods/files/methodFile"
+import {get,download , starred} from "../methods/files/methodFile"
 import convertByte from "../methods/files/convertByte";
 import options from "../components/app/home/options.vue";
 import modalFile from "../components/app/home/modalFile.vue"
 import modalDetail from "../components/app/home/modalDetail.vue"
 import modalDelete from "../components/app/home/modalDelete.vue";
-
 
 
 export default {
@@ -121,6 +122,17 @@ export default {
     });
   },
   methods: {
+    starred(id){
+      starred(id).then(response=>{
+        this.files.map(item => {
+          if(item.id == id){
+            item.stared = ! item.stared
+          }
+        })
+      }).catch(error => {
+        console.log(error.response);
+      })
+    },  
     Download(fileName){
       download(fileName)
       .then(response => {
@@ -144,7 +156,7 @@ export default {
         this.files = response.data.data;
       })
       .catch((response) => {
-        // console.log(response);
+        console.log(response);
       });
     },
     toggleOption(index) {
@@ -153,12 +165,13 @@ export default {
     onResize() {
       this.windowWidth = window.innerWidth > 1024 ? 4 : 3;
     },
-    showModal(fileName ,url = null , type , id){
+    showModal(fileName ,url = null , type , id , stared){
       this.dataFile= {
         fileName,
         url,
         type,
-        id
+        id,
+        stared
       }
       this.modal = true
     },
