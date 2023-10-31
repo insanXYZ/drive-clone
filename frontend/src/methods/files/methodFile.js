@@ -33,11 +33,11 @@ axiosInstance.interceptors.response.use(
 
       return axiosInstance(originalRequest)
     }
-    // if(error.response.status == 401 && error.response.data.message == "Invalid" || "Error"){
+    if(error.response.status == 401 && error.response.data.message == "Invalid" || "Error"){
 
-    //   Cookies.remove("token")
-    //   this.$router.push("/login")
-    // }
+      Cookies.remove("token")
+      this.$router.push("/login")
+    }
 
     return Promise.reject(error)
   }
@@ -103,4 +103,13 @@ function getStarred(){
   return axiosInstance.get("/starred")
 }
 
-export {get,input,deleteFile,updateName,download,getTrash,restore,forceDelete,starred,getStarred};
+function searchFile(fileName , type){
+  return axiosInstance.get("/file/search",{
+    params:{
+      que  :fileName,
+      type : type
+    }
+  })
+}
+
+export {get,input,deleteFile,updateName,download,getTrash,restore,forceDelete,starred,getStarred,searchFile};

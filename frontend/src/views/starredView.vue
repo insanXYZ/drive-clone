@@ -1,5 +1,5 @@
 <template>
-  <bar>
+  <bar @input="item => searchFile(item) ">
     <div v-if="files.length == 0" class="w-full h-full flex flex-col gap-7 justify-center items-center overflow-y-auto">
       <img src="src/assets/img/starSlash.png" class="w-40 opacity-70">
       <span class="text-2xl font-light">Tidak ada file berbintang</span>
@@ -60,7 +60,7 @@
 import bar from './templates/bar.vue';
 import options from '../components/app/home/options.vue';
 import convertByte from '../methods/files/convertByte';
-import {getStarred , starred} from "../methods/files/methodFile"
+import {getStarred , starred , searchFile} from "../methods/files/methodFile"
 
 export default {
   data(){
@@ -77,6 +77,15 @@ export default {
     this.getDrive()
   },
   methods: {
+    searchFile(fileName){
+      searchFile(fileName , "starred").then(response=>{
+        if(response.data.data.length > 0){
+          this.files = response.data.data
+        }
+      }).catch(error=>{
+        console.log(error.response.data);
+      })
+    },
     starred(id){
       starred(id).then(response=>{
         this.files.map(item => {

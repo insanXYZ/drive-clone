@@ -5,7 +5,7 @@
   </modalDetail>
   <modalDelete @response="closeDelete" v-if="deleteShow" :dataFile="deleteFile">
   </modalDelete>
-  <bar @input="item => console.log(item)" @response="getDrive()">
+  <bar @input="item => searchFile(item)" @response="getDrive()">
     <div class="w-full flex flex-col gap-5 overflow-y-auto">
       <div class="grid lg:grid-cols-4 md:grid-cols-3 gap-3">
         <div
@@ -94,7 +94,7 @@
 </template>
 <script>
 import bar from "./templates/bar.vue";
-import {get,download , starred} from "../methods/files/methodFile"
+import {get,download , starred,searchFile} from "../methods/files/methodFile"
 import convertByte from "../methods/files/convertByte";
 import options from "../components/app/home/options.vue";
 import modalFile from "../components/app/home/modalFile.vue"
@@ -122,6 +122,15 @@ export default {
     });
   },
   methods: {
+    searchFile(fileName){
+      searchFile(fileName , null).then(response=>{
+        if(response.data.data.length > 0){
+          this.files = response.data.data
+        }
+      }).catch(error=>{
+        console.log(error.response.data);
+      })
+    },
     starred(id){
       starred(id).then(response=>{
         this.files.map(item => {

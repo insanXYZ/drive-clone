@@ -92,6 +92,7 @@ export default {
         login(this.email, this.password)
           .then((response) => {
             if (response.data.success == true) {
+              Cookies.set("username",response.data.username);
               Cookies.set("token", response.data.token);
               this.$router.push("/");
             }

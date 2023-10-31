@@ -94,6 +94,18 @@ class FileController extends Controller
         ]);
     }
 
+    public function search(Request $request){
+        if($request->input("type") == "trash"){
+            return filesResource::collection(User::find(JWTAuth::user()->id)->file()->onlyTrashed()->where("fileName","LIKE", "%".$request->input("que")."%")->get());
+        }
+        if($request->input("type") == "starred"){
+            return filesResource::collection(User::find(JWTAuth::user()->id)->file()->starred()->where("fileName","LIKE", "%".$request->input("que")."%")->get());
+        }
+        if($request->input("type") == null){
+            return filesResource::collection(User::find(JWTAuth::user()->id)->file()->where("fileName","LIKE", "%".$request->input("que")."%")->get());
+        }
+    }
+
     // Trash
 
     public function getTrash()

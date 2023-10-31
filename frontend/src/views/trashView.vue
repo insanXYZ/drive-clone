@@ -1,5 +1,5 @@
 <template >
-  <bar>
+  <bar @input="item => searchFile(item)">
       <div v-if="files.length == 0" class="w-full h-full flex flex-col gap-7 justify-center items-center overflow-y-auto">
       <img src="src/assets/img/garbage.png" class="w-40 opacity-70">
       <span class="text-2xl font-light">Sampah Kosong</span>
@@ -57,7 +57,7 @@
 </bar>
 </template>
 <script>
-import { getTrash , restore , forceDelete} from "../methods/files/methodFile";
+import { getTrash , restore , forceDelete , searchFile} from "../methods/files/methodFile";
 import bar from "./templates/bar.vue";
 import convertByte from "../methods/files/convertByte";
 import options from "../components/app/home/options.vue";
@@ -103,7 +103,16 @@ export default {
       }).catch(error=>{
         console.log(error.response.data);
       })
-    }
+    },
+    searchFile(fileName){
+      searchFile(fileName , "trash").then(response=>{
+        if(response.data.data.length > 0){
+          this.files = response.data.data
+        }
+      }).catch(error=>{
+        console.log(error.response.data);
+      })
+    },
   }
 }
 </script>

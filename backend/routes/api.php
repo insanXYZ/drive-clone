@@ -24,8 +24,10 @@ Route::middleware("guest")->group(function(){
 });
 
 Route::middleware("auth.jwt")->group(function(){
+    Route::get("/exit", [AuthController::class , "exit"]);
     Route::post("/refresh",[AuthController::class ,"refresh"]);
     Route::post("/file",[FileController::class , "input"]);
+    Route::get("/file/search",[FileController::class , "search"]);
     Route::put("/file/{id}",[FileController::class , "update"]);
     Route::get("/file",[FileController::class , "index"]);
     Route::get("/file/{fileName}",[FileController::class , "download"]);

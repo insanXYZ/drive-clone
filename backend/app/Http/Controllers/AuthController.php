@@ -65,6 +65,7 @@ class AuthController extends Controller
         return response()->json([
             "success" => true,
             "token" => $token,
+            "username" => User::find(JWTAuth::user()->id)->name,
             "expires_in" => config("jwt.ttl")
         ]);
     }
@@ -76,5 +77,14 @@ class AuthController extends Controller
         return response()->json([
             "token" => $token
         ]);
+    }
+
+    public function exit(){
+        // auth()->logout();
+
+        return response()->json([
+            "success"=> true
+        ]);
+
     }
 }

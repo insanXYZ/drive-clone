@@ -4,10 +4,10 @@
   <div class="w-screen h-screen flex bg-zinc-100 z-10">
     <!-- leftbar -->
     <div class="flex w-[270px] flex-col gap-6 h-full px-5 py-3">
-      <div class="flex gap-2 items-center">
+      <router-link to="/" class="flex gap-2 items-center">
         <img class="w-10" src="/src/assets/img/drive.png" />
         <span class="text-2xl font-light">Drive</span>
-      </div>
+      </router-link>
       <!-- input -->
       <inputFile @uploadInput="(item) => upload(item)"></inputFile>
       <div class="flex flex-col gap-4 w-full">
@@ -19,7 +19,7 @@
       </div>
     </div>
     <!-- rightbar -->
-    <div class="w-full h-full overflow-hidden relative">
+    <div class="w-full h-full overflow-hidden relative" >
       <!-- topbar -->
       <div class="w-full px-1 pr-5 flex justify-between h-[50px]">
         <form action="" @submit.prevent="formInput" class="flex items-center">
@@ -35,7 +35,15 @@
         </form>
         <div class="flex gap-5 items-center">
           <img src="src/assets/img/setting.png" class="w-5" />
-          <img src="src/assets/img/user.png" class="w-5" />
+          <div class="relative">
+            <img @click="openAccount()" src="src/assets/img/user.png" class="w-5 cursor-pointer" />
+            <Transition name="slide-fade">
+              <div v-if="showAccount" class="absolute z-20 p-4 bg-white shadow-2xl flex flex-col gap-3 w-[250px] -bottom-28 -left-64">
+                <options img="user.png">{{ name }}</options>
+                <options @click="exit()" img="exit.png">Keluar</options>
+              </div>
+            </Transition>
+          </div>
         </div>
       </div>
       <!-- mainBar -->
@@ -50,21 +58,28 @@
 <script>
 import menuLabel from "../../components/app/menuLabel.vue";
 import {input} from "../../methods/files/methodFile";
+import {exit} from "../../methods/auth/methodAuth";
 import inputFile from "../../components/app/inputFile.vue";
 import modalProgress from "../../components/app/modalProgress.vue";
+import options from "../../components/app/home/options.vue";
+import Cookies from "js-cookie"
+
 
 export default {
   data(){
     return{
       showProgress: false,
       value: 0,
-      input : ""
+      input : "",
+      showAccount : false,
+      name : Cookies.get("username")
     }
   },
   components: {
     menuLabel,
     inputFile,
     modalProgress,
+    options
   },
   emits: ["response", "input"],
   methods: {
@@ -96,7 +111,33 @@ export default {
     },
     formInput(){
       this.$emit("input",this.input)
+    },
+    openAccount(){
+      this.showAccount = ! this.showAccount
+    },
+    exit(){
+      exit().then(response=>{
+        Cookies.remove("token")
+        Cookies.remove("username")
+        this.$router.push("/login")
+      }).catch(error=>{
+        console.log(error.response);
+      })
     }
   },
 };
 </script>
+<style>
+.slide-fade-enter-active {
+  transition: all 0.1s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
+}</style>
