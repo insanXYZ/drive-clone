@@ -80,7 +80,7 @@ class AuthController extends Controller
     }
 
     public function exit(){
-        // auth()->logout();
+        JWTAuth::logout();
 
         return response()->json([
             "success"=> true
