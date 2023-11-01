@@ -24,3 +24,5 @@
 2. Download file
 3. Memberi bintang pada file
 4. Hapus file
+5. Ganti nama file
+6. Mengembalikan file yang sudah di hapus
