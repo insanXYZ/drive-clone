@@ -18,7 +18,7 @@
 11. ```npm install```
 12. ```npm run dev```
 
-13. ## Fitur drive-clone
+## Fitur drive-clone
 
 1. Memasukkan file
 2. Download file
