@@ -17,3 +17,10 @@
 10. ```cd ../frontend```
 11. ```npm install```
 12. ```npm run dev```
+
+13. ## Fitur drive-clone
+
+1. Memasukkan file
+2. Download file
+3. Memberi bintang pada file
+4. Hapus file
